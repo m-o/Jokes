@@ -1,12 +1,22 @@
 package name.ovecka.jokes
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class Joke(
+data class JokeModel(
+        val id: Int,
         val type: String,
         val joke: String?,
         val category: String,
         val setup: String?,
         val delivery: String?
-)
+){
+    companion object{
+        enum class JokeType(val value: String) {
+            SINGLE("single"),
+            TWOPART("twopart")
+        }
+    }
+}

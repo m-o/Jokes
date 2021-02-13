@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'kotlin-android-extensions'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -37,7 +37,7 @@ android {
 }
 
 dependencies {
-    def room_version = "2.2.6"
+    def room_version = "2.3.0-beta01"
     def nav_version = "2.3.3"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -63,8 +63,8 @@ dependencies {
     implementation "io.reactivex.rxjava3:rxjava:3.0.10"
     implementation "io.reactivex.rxjava3:rxkotlin:3.0.1"
 
-
     implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-rxjava3:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
     testImplementation 'junit:junit:4.+'
