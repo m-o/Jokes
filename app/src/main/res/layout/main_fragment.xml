@@ -5,55 +5,38 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.MainFragment">
+    tools:context=".ui.main.MainFragment"
+    android:padding="32dp">
 
     <TextView
         android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textAlignment="center"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@id/newJokeButton" />
 
     <Button
         android:id="@+id/newJokeButton"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
         android:text="New Joke"
-        android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/message"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toLeftOf="@id/saveJokeButton" />
 
     <Button
         android:id="@+id/saveJokeButton"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_width="0dp"
+        android:layout_marginLeft="16dp"
         android:layout_height="wrap_content"
         android:text="Save Joke"
-        android:textColor="@color/white"
         android:layout_marginTop="32dp"
-        app:layout_constraintTop_toBottomOf="@id/newJokeButton"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/newJokeButton"
         app:layout_constraintRight_toRightOf="parent" />
-
-    <Button
-        android:id="@+id/getAllJokesButton"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_height="wrap_content"
-        android:text="Get Jokes"
-        android:textColor="@color/white"
-        android:layout_marginTop="32dp"
-        app:layout_constraintTop_toBottomOf="@id/saveJokeButton"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

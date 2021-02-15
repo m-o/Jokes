@@ -6,7 +6,7 @@ import retrofit2.http.GET
 
 interface JokesApi {
 
-    @GET("joke/Any")
+    @GET("joke/Any?safe-mode")
     fun randomJoke(): Observable<JokeModel>
 
 }

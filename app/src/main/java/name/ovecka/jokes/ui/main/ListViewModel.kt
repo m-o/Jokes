@@ -11,24 +11,23 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.launch
 import name.ovecka.jokes.*
 
-class MainViewModel : ViewModel() {
+class ListViewModel : ViewModel() {
 
     private val repository = JokesApplication().repository
     private var jokeModelLiveData: MutableLiveData<JokeModel> = MutableLiveData()
-    private var saveJokeLiveData: MutableLiveData<Boolean> = MutableLiveData()
-
-    var currentJokeSaved = false
+    private var jokeListLiveData: MutableLiveData<List<JokeModel>> = MutableLiveData()
 
     fun getJokeLiveData() = jokeModelLiveData as LiveData<JokeModel>
-    fun getSaveJokeLiveData() = saveJokeLiveData as LiveData<Boolean>
+    fun getJokeListLiveData() = jokeListLiveData as LiveData<List<JokeModel>>
+
+    init {
+        getAllJokes()
+    }
 
     fun getRandomJoke(){
         repository.getRandomJoke()
                     .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeBy(
-                onNext = {
-                    jokeModelLiveData.postValue(it)
-                    currentJokeSaved = false
-                         },
+                onNext = { jokeModelLiveData.postValue(it)},
                 onError =  { it.printStackTrace() },
                 onComplete = { println("Done!") }
         )
@@ -36,11 +35,17 @@ class MainViewModel : ViewModel() {
 
     fun saveJoke(joke: JokeModel){
             repository.insertJoke(joke).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeBy(
-                onComplete = {
-                    saveJokeLiveData.postValue(true)
-                    currentJokeSaved = true
-                             },
-                onError =  { saveJokeLiveData.postValue(false)})
+                onComplete = { Log.d("MainViewModel","joke inserted")},
+                onError =  { it.printStackTrace() })
     }
 
+    fun getAllJokes(){
+        repository.allJokes.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeBy(
+                onNext = {
+                    val jokesList = it.map { joke -> JokeModel( id = joke.id, type = joke.type, joke = joke.joke, category= joke.category, setup= joke.setup, delivery = joke.delivery)}
+                    jokeListLiveData.postValue(jokesList)},
+                onError =  { it.printStackTrace()},
+                onComplete = { println("Done!")}
+        )
+    }
 }

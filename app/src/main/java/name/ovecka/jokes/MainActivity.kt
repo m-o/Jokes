@@ -2,17 +2,32 @@ package name.ovecka.jokes
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import name.ovecka.jokes.ui.main.MainFragment
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI.onNavDestinationSelected
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import name.ovecka.jokes.databinding.MainActivityBinding
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: MainActivityBinding
+    private val topLevelScreens = setOf(R.id.mainFragment,R.id.listFragment)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, MainFragment.newInstance())
-                    .commitNow()
+        binding = MainActivityBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        binding.bottomNavigation.setupWithNavController(navController)
+        setupActionBarWithNavController(navController, AppBarConfiguration(topLevelScreens))
+        binding.bottomNavigation.setOnNavigationItemSelectedListener {item ->
+            onNavDestinationSelected(item, Navigation.findNavController(this, R.id.nav_host_fragment))
         }
     }
 }

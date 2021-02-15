@@ -5,6 +5,10 @@ plugins {
     id 'kotlin-parcelize'
 }
 
+kapt {
+    correctErrorTypes = true
+}
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.1"
@@ -39,6 +43,7 @@ android {
 dependencies {
     def room_version = "2.3.0-beta01"
     def nav_version = "2.3.3"
+    def epoxyVersion = "4.3.1"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.3.2'
@@ -65,6 +70,10 @@ dependencies {
 
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-rxjava3:$room_version"
+
+    implementation "com.airbnb.android:epoxy:$epoxyVersion"
+    kapt "com.airbnb.android:epoxy-processor:$epoxyVersion"
+
     kapt "androidx.room:room-compiler:$room_version"
 
     testImplementation 'junit:junit:4.+'
