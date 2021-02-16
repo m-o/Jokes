@@ -25,7 +25,6 @@ abstract class EpoxyJoke: EpoxyModelWithHolder<EpoxyJoke.EpoxyJokeHolder>() {
         holder.jokeText.text = joke
 
         holder.deleteImage.setOnClickListener {
-            Log.d("Deleteeee","delete image")
             onDelete(jokeId)
         }
     }
