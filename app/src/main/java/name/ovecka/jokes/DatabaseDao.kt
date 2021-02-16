@@ -1,6 +1,7 @@
 package name.ovecka.jokes
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import io.reactivex.rxjava3.core.Completable
@@ -19,6 +20,9 @@ class DatabaseDao {
 
         @Query("DELETE FROM Joke")
         fun deleteAll(): Completable
+
+        @Delete
+        fun deleteJoke(joke: Joke): Completable
     }
 
 }

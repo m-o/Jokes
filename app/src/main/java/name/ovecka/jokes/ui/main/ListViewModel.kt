@@ -14,38 +14,36 @@ import name.ovecka.jokes.*
 class ListViewModel : ViewModel() {
 
     private val repository = JokesApplication().repository
-    private var jokeModelLiveData: MutableLiveData<JokeModel> = MutableLiveData()
-    private var jokeListLiveData: MutableLiveData<List<JokeModel>> = MutableLiveData()
+    private var jokeListLiveData: MutableLiveData<State<List<JokeModel>>> = MutableLiveData()
 
-    fun getJokeLiveData() = jokeModelLiveData as LiveData<JokeModel>
-    fun getJokeListLiveData() = jokeListLiveData as LiveData<List<JokeModel>>
+    fun getJokeListLiveData() = jokeListLiveData as LiveData<State<List<JokeModel>>>
 
     init {
         getAllJokes()
     }
 
-    fun getRandomJoke(){
-        repository.getRandomJoke()
-                    .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeBy(
-                onNext = { jokeModelLiveData.postValue(it)},
-                onError =  { it.printStackTrace() },
-                onComplete = { println("Done!") }
+    //Intentionally not sending info to fragment.
+    fun deleteJoke(joke: JokeModel): LiveData<State<Boolean>>{
+        val deleteJokeLiveData = MutableLiveData<State<Boolean>>()
+        repository.deleteJoke(joke).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeBy(
+            onComplete = {
+                deleteJokeLiveData.postValue(State.Success(true))
+            },
+            onError = {
+                deleteJokeLiveData.postValue(State.Error(it.message ?: "No message, still error :)"))
+            }
         )
-    }
-
-    fun saveJoke(joke: JokeModel){
-            repository.insertJoke(joke).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeBy(
-                onComplete = { Log.d("MainViewModel","joke inserted")},
-                onError =  { it.printStackTrace() })
+        return deleteJokeLiveData
     }
 
     fun getAllJokes(){
         repository.allJokes.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeBy(
                 onNext = {
                     val jokesList = it.map { joke -> JokeModel( id = joke.id, type = joke.type, joke = joke.joke, category= joke.category, setup= joke.setup, delivery = joke.delivery)}
-                    jokeListLiveData.postValue(jokesList)},
-                onError =  { it.printStackTrace()},
-                onComplete = { println("Done!")}
+                    jokeListLiveData.postValue(State.Success(jokesList))},
+                onError = {
+                    jokeListLiveData.postValue(State.Error(it.message ?: "No message, still error :)"))
+                }
         )
     }
 }

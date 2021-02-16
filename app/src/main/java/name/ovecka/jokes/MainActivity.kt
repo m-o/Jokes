@@ -26,8 +26,5 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottomNavigation.setupWithNavController(navController)
         setupActionBarWithNavController(navController, AppBarConfiguration(topLevelScreens))
-        binding.bottomNavigation.setOnNavigationItemSelectedListener {item ->
-            onNavDestinationSelected(item, Navigation.findNavController(this, R.id.nav_host_fragment))
-        }
     }
 }
